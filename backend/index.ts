@@ -1,33 +1,30 @@
 import express from 'express';
-import nodemailer from 'nodemailer';
 import dotenv from "dotenv"
+import cors from "cors"
+import  userRouter from './src/user/userRoutes';
+import mongoose from 'mongoose';
 
 dotenv.config()
 const app = express();
+
+
 app.use(express.json());
-
-
-const sendEmail = async (to: string, subject: string, html: string) => {
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: process.env.USER_EMAIL,
-      pass: process.env.USER_PASSWORD
+app.use(cors())
+const connectDB = async () => {
+    try {
+      await mongoose.connect(process.env.MONGODB_URI!);
+      console.log('MongoDB connected');
+    } catch (error) {
+      console.error('MongoDB connection error:', error);
+      process.exit(1);
     }
-  });
-
-  const mailOptions = {
-    from: process.env.USER_EMAIL,
-    to,
-    subject,
-    html
   };
 
-  await transporter.sendMail(mailOptions);
-};
+connectDB()  
+app.use('/api',userRouter)
 
 // Start the server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, async() => {
-    await sendEmail("14besemsyed@seecs.edu.pk", "nothing","http://localhost:3000/")
+app.listen(PORT, () => {
+    console.log("backend connected", PORT)
 });

@@ -1,22 +1,31 @@
-import React, { ReactEventHandler, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import axios from "axios";
+
+
 export default function UserAuthentication() {
     const [inputs, setInputs] = useState({ name: "", email: "", password: "" })
     const [formSent, setFormSent] = useState(false)
-    const navigate = useNavigate()
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         let obj = inputs
         setInputs({ ...obj, [name]: value })
     }
 
-    const submit = (e: React.FormEvent) => {
+    const submit = async (e: React.FormEvent) => {
         e.preventDefault()
-
-        console.log(inputs);
-        setFormSent(true)
+        try{
+            const response = await axios.post('http://localhost:5000/api/signup', inputs)
+            if(response){
+                setFormSent(true)
+            }
+            console.log(inputs);
+            setFormSent(true)
+        }
+        catch(error){
+            alert(error)
+            console.log(error)
+        }
     }
-
     return <div className="user-signup">
         <div className="h-1">Let's Make it Happen Together</div>
         <form onSubmit={(e) => submit(e)}>
