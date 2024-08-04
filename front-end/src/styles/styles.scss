@@ -9,7 +9,8 @@ $input-margin: 10px;
 $button-padding: 15px 25px;
 $border-radius: 5px;
 $heading-font-size: 32px;
-$form-margin:20px;
+$second-heading-font-size: 23px;
+$form-margin: 20px;
 
 
 // Global Styles
@@ -21,13 +22,15 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
-nav{
-        display: flex;
-        justify-content: end;
-        padding: $border-radius;
-        div{
-            margin:0 $border-radius;
-        }
+
+nav {
+    display: flex;
+    justify-content: end;
+    padding: $border-radius;
+
+    div {
+        margin: 0 $border-radius;
+    }
 }
 
 .h-1 {
@@ -83,7 +86,7 @@ form {
     width: 50%;
     display: flex;
     flex-direction: column;
-    margin:$form-margin 0;
+    margin: $form-margin 0;
 
     label {
         text-align: left;
@@ -109,9 +112,29 @@ form {
             text-decoration: underline;
         }
     }
-    .link{
-        color:blue
+
+    .link {
+        color: blue
     }
+}
+
+.teams-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: $heading-font-size 0px;
+
+    .team-row-element {
+        margin: $input-margin;
+
+        border: $border-color solid 1px;
+        padding: $input-padding;
+        color: $text-color;
+        font-size: $second-heading-font-size;
+        font-weight: bold;
+    }
+
 }
 
 // Button

@@ -7,6 +7,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import Backlog from './components/backlog/Backlog';
 import UserActivation from './components/user-authentication/UserActivation';
 import UserLogin from './components/user-authentication/UserLogin';
+import Teams  from './components/teams/Teams';
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [activation, setActivation] = useState(false)
@@ -45,8 +46,7 @@ function App() {
           <Route path="/" element={<UserAuthentication />} />
           <Route path='/login' element={<UserLogin setLoggedIn={(log: boolean) => setLoggedIn(log)} />} />
           <Route path="/activate" element={<UserActivation setActivation={(act) => setActivation(act)} />} />
-
-
+          <Route path="/team" element={<Teams />}/>
         </Routes>
       </BrowserRouter>
     </div >

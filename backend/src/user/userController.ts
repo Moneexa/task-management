@@ -1,7 +1,7 @@
 import User, { IUser } from "./userModel";
 import { Request, Response } from "express";
 import sendEmail from "./sendEmail";
-import { verifyToken } from "../auth/verifyToken";
+import { verifyTokenForActivation } from "../auth/verifyToken";
 
 import { generateTokenForActivation, generateTokenForLogin } from "../auth/generateToken";
 // src/types/RequestBody.ts
@@ -31,7 +31,7 @@ export const activateUser = async (req: Request, res: Response) => {
     const token = req.body.token as string;
 
     try {
-        const verifyResponse = await verifyToken(token, process.env.TOKEN_SECRET || "")
+        const verifyResponse = await verifyTokenForActivation(token, process.env.TOKEN_SECRET || "")
         if (verifyResponse == 'expired link') {
             res.status(400).send('Your link is expired')
         } else if(verifyResponse=="invalid link"){
