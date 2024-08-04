@@ -4,7 +4,7 @@ import { registerUser, activateUser,login } from './userController';
 const userRouter = express.Router()
 
 userRouter.post('/signup',registerUser)
-userRouter.get('/activate',activateUser)
+userRouter.post('/activate',activateUser)
 userRouter.post('/login', login)
 
 

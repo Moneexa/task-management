@@ -1,4 +1,6 @@
 import React from "react";
-export default function Dashboard(){
-    return <>This is dahsboard page</>
+export default function Dashboard() {
+    return <div className="">
+        <div className="h-1">Your Teams</div>
+    </>
 }
