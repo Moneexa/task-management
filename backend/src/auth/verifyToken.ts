@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken'
 import User, { IUser } from "../user/userModel";
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 
 export const verifyTokenForActivation = async (token: string, secret: string) => {
@@ -31,15 +31,15 @@ export const verifyTokenForActivation = async (token: string, secret: string) =>
     }
 }
 
-export const verifyTokenForLogin = async (req:Request, res:Response) => {
+export const verifyTokenForLogin = async (req:Request, res:Response, next:NextFunction) => {
     const token=req.header('Authorization')
     if(!token){
         return res.status(401).send('No token secret available')
     } 
     try {
-        const decoded = jwt.verify(token, process.env.TOKEN_SECRET || "")
+        const decoded = jwt.verify(token.split(" ")[1], process.env.TOKEN_SECRET || "")
         if(typeof decoded=='string'){
-            throw new Error('Invalid token')
+            return res.status(401).send('Please Login Again')
         }
         const email = decoded.email;
         const user = await User.findOne({email});
@@ -48,16 +48,16 @@ export const verifyTokenForLogin = async (req:Request, res:Response) => {
 
             user.isActive = true;
             await user.save();
-            return 'success'
+            next()
 
         } else {
-            return 'invalid link';
+            return res.status(401).send('Please login again')
         }
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {
-            return 'expired link';
+            return res.status(401).send('Try logging again')
         }
 
-        return 'invalid link';
+        return res.status(404).send('Please Login')
     }
 }
