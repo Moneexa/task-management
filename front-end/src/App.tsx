@@ -8,11 +8,11 @@ import Backlog from './components/backlog/Backlog';
 import UserActivation from './components/user-authentication/UserActivation';
 import UserLogin from './components/user-authentication/UserLogin';
 import Teams from './components/teams/Teams';
+import TeamsCom from './components/teams/TeamComp';
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
-  const [activation, setActivation] = useState(false)
   useEffect(() => {
-    setLoggedIn(loggedIn && activation)
+    setLoggedIn(loggedIn)
   }, [loggedIn])
 
   return (
@@ -20,7 +20,7 @@ function App() {
       <BrowserRouter>
         <nav>
           {
-            (!loggedIn && !activation) && <>
+            (!loggedIn) && <>
             <div><Link to="/">SignUp</Link></div>
             <div><Link to="/login">Login</Link></div>
             </>
@@ -28,11 +28,7 @@ function App() {
           }
 
           {
-            (!loggedIn && activation) && <div><Link to="/login">Login</Link></div>
-
-          }
-          {
-            (loggedIn && activation) && <>
+            loggedIn && <>
               <div><Link to="/backlog">Backlog</Link></div>
               <div><Link to="/dashboard">Dashboard</Link></div>
               <div><Link to="/login" onClick={() => {
@@ -43,14 +39,15 @@ function App() {
           }
         </nav>
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard/>} />
 
-          <Route path="/backlog" element={<Backlog />} />
+          <Route path="/backlog/:teamID" element={<Backlog />} />
 
-          <Route path="/" element={<UserAuthentication />} />
-          <Route path='/login' element={<UserLogin setLoggedIn={(log: boolean) => setLoggedIn(log)} />} />
-          <Route path="/activate" element={<UserActivation setActivation={(act) => setActivation(act)} />} />
+          <Route path="/" element={<UserAuthentication />}/>
+          <Route path='/login' element={<UserLogin setLoggedIn={(log: boolean) => setLoggedIn(log)}  />} />
+          <Route path="/activate" element={<UserActivation/>} />
           <Route path="/team" element={<Teams />} />
+          <Route path="/tasks/:teamID" element={<TeamsCom />}/>
         </Routes>
       </BrowserRouter>
     </div >

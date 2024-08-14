@@ -5,7 +5,7 @@ import {verifyTokenForLogin} from '../auth/verifyToken'; // Adjust path as neces
 const router = Router();
 
 // Apply the verifyToken middleware to routes that need protection
-router.post('/teams', verifyTokenForLogin, createTeam); // Route to create a new team
+router.post('/teams/create', verifyTokenForLogin, createTeam); // Route to create a new team
 router.get('/teams', verifyTokenForLogin, getAllTeams); // Route to get all teams
 router.get('/teams/:id', verifyTokenForLogin, getTeamById); // Route to get a specific team by ID
 

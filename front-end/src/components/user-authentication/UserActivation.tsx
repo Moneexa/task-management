@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const UserActivation = (props:{setActivation:(act:boolean)=>void }) => {
+const UserActivation = () => {
     const [message, setMessage] = useState('');
     const token=new URLSearchParams(useLocation().search).get('token')
     const location = useLocation();
@@ -18,7 +18,6 @@ const UserActivation = (props:{setActivation:(act:boolean)=>void }) => {
                     alert(response)
                     debugger
                     setMessage(response?.data);
-                    props.setActivation(true)
                 })
                 .catch(error => {
                     console.log(error)

@@ -2,6 +2,12 @@ import * as jwt from 'jsonwebtoken'
 import User, { IUser } from "../user/userModel";
 import { Request, Response, NextFunction } from 'express';
 
+export interface AuthenticatedRequest extends Request {
+    user?: {
+        email: string;
+    };
+}
+
 
 export const verifyTokenForActivation = async (token: string, secret: string) => {
 
@@ -31,7 +37,7 @@ export const verifyTokenForActivation = async (token: string, secret: string) =>
     }
 }
 
-export const verifyTokenForLogin = async (req:Request, res:Response, next:NextFunction) => {
+export const verifyTokenForLogin = async (req:AuthenticatedRequest, res:Response, next:NextFunction) => {
     const token=req.header('Authorization')
     if(!token){
         return res.status(401).send('No token secret available')
@@ -44,10 +50,7 @@ export const verifyTokenForLogin = async (req:Request, res:Response, next:NextFu
         const email = decoded.email;
         const user = await User.findOne({email});
         if (user) {
-            console.log(user)
-
-            user.isActive = true;
-            await user.save();
+            req.user={email:email}
             next()
 
         } else {

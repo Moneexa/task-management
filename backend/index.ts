@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import cors from "cors"
 import  userRouter from './src/user/userRoutes';
 import teamRouter from './src/team/teamRouter'
+import taskRouter from './src/task/taskRouter'
 import mongoose from 'mongoose';
 
 dotenv.config()
@@ -24,6 +25,7 @@ const connectDB = async () => {
 connectDB()  
 app.use('/api',userRouter)
 app.use('/api', teamRouter)
+app.use('/api', taskRouter)
 
 // Start the server
 const PORT = process.env.PORT || 5000;

@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Teams() {
     const [teamData, setTeamData] = useState({ name: "", members: [""] });
+    const navigate = useNavigate()
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -33,20 +35,23 @@ export default function Teams() {
         console.log("Submitted Team Data:", teamData);
         try {
             const resp = await axios.post(
-                'http://localhost:5000/api/teams/', // Update the URL as necessary
+                'http://localhost:5000/api/teams/create', // Update the URL as necessary
                 teamData, // This should be the payload sent to the API
                 {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('auth')}`
                     }
-
                 }
 
             );
-            console.log("Response:", resp.data);
+            if (resp) {
+                console.log("Response:", resp.data);
+                navigate(`/tasks?teamID=${resp.data.id}`)
+
+            }
             // Handle successful response (e.g., reset form, show success message)
         } catch (error) {
-            alert("Error submitting team data:" +error);
+            alert("Error submitting team data:" + error);
             // Handle error (e.g., show error message to the user)
         }        // Handle form submission logic (e.g., API call)
     };
@@ -81,7 +86,7 @@ export default function Teams() {
                         </button>
                     </div>
                 ))}
-                <button type="submit">Submit</button>
+                <button type="submit">Add Tasks for the Team</button>
             </form>
         </div>
     );
