@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function TeamsCom() {
     const {teamID} = useParams()
+    const navigate=useNavigate()
     const [teamTask, setTeamTask] = useState({ taskNumber: "", description: "", status: ""})
     useEffect(()=>{
         debugger;
@@ -34,6 +35,7 @@ export default function TeamsCom() {
                 if(resp){
                     console.log("submission successfull")
                 }
+                navigate(`/backlog/${teamID}`)
             }catch(error){
                 console.error(error)
             }

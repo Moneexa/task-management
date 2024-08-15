@@ -53,3 +53,20 @@ export const getAllTasks = async (req: Request, res: Response) => {
 
 };
 
+export const updateTask=async(req:Request, res:Response)=>{
+    try {
+        const task = req.body; // emails should be an array of user emails
+        // Find user IDs based on the provided emails
+        const taskId=new mongoose.Types.ObjectId(req.params.taskID)
+        const result= await Task.findByIdAndUpdate({_id:taskId},{
+            status:task.status
+        });
+        if(result){
+            res.status(201).json(result);
+        }
+    } catch (error) {
+        console.error('Error updating tasks:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
