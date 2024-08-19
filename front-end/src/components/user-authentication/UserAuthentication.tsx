@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
-
-
+import { axiosHelperFunction } from "../../axiosCall/axiosHelper";
+type Input = {
+    name: string, email: string, password: string
+}
 export default function UserAuthentication() {
     const [inputs, setInputs] = useState({ name: "", email: "", password: "" })
     const [formSent, setFormSent] = useState(false)
@@ -12,19 +13,11 @@ export default function UserAuthentication() {
     }
 
     const submit = async (e: React.FormEvent) => {
+
         e.preventDefault()
-        try{
-            const response = await axios.post('http://localhost:5000/api/signup', inputs)
-            if(response){
-                console.log(response)
-                setFormSent(true)
-            }
-            console.log(inputs);
+        const result = await axiosHelperFunction<Input, string>({ "dataSource": "signup", fetchType: "post", payload: inputs })
+        if (result.status == "success") {
             setFormSent(true)
-        }
-        catch(error){
-            alert(error)
-            console.log(error)
         }
     }
     return <div className="user-signup">

@@ -1,6 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { axiosHelperFunction } from "../../axiosCall/axiosHelper";
+
+type Team = {
+    name: string, members: string[]
+}
+
+type TeamResponse = {
+    id: string
+} & Team
 
 export default function Teams() {
     const [teamData, setTeamData] = useState({ name: "", members: [""] });
@@ -33,29 +42,18 @@ export default function Teams() {
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Submitted Team Data:", teamData);
-        try {
-            const resp = await axios.post(
-                'http://localhost:5000/api/teams/create', // Update the URL as necessary
-                teamData, // This should be the payload sent to the API
-                {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('auth')}`
-                    }
-                }
-
-            );
-            if (resp) {
-                console.log("Response:", resp.data);
-                navigate(`/tasks?teamID=${resp.data.id}`)
-
-            }
-            // Handle successful response (e.g., reset form, show success message)
-        } catch (error) {
-            alert("Error submitting team data:" + error);
-            // Handle error (e.g., show error message to the user)
-        }        // Handle form submission logic (e.g., API call)
+        const resp = await axiosHelperFunction<Team, TeamResponse>({
+            "dataSource": "/team/create",
+            "fetchType": "post",
+            "payload": teamData
+        })
+        if (resp.status == "success") {
+            const responseData = resp.data
+            console.log("Response:", resp.data);
+            //@ts-ignore
+            navigate(`/tasks?teamID=${resp.data.id}`)
+        }
     };
-
     return (
         <div className="user-signup">
             <h1>Let's Make it Happen Together</h1>

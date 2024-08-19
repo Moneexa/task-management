@@ -47,6 +47,9 @@ export const activateUser = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body as RegisterRequestBody
+    if(!email || !password){
+        return res.status(404).send("what the fuck")
+    }
     try {
         const user = await User.findOne({ email, password })
         if (user) {
