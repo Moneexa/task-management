@@ -10,7 +10,7 @@ const Backlog = () => {
     const navigate = useNavigate();
     const { teamID } = useParams();
 
-    const [tasks, setTasks] = useState<Result<Task[], string>>({ "status": "init" });
+    const [tasks, setTasks] = useState<Result<Task[]>>({ "status": "init" });
 
     useEffect(() => {
 
@@ -19,7 +19,7 @@ const Backlog = () => {
             if (!teamID) {
                 return ""
             }
-            const result = await axiosHelperFunction<Task[], string>({ "dataSource": "tasks", "fetchType": "get", "queryParam": teamID })
+            const result = await axiosHelperFunction<string, Task[]>({ "dataSource": "tasks", "fetchType": "get", "queryParam": teamID })
             if (typeof result !== "undefined") {
                 setTasks(result)
             }

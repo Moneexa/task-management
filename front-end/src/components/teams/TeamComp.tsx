@@ -29,7 +29,7 @@ export default function TeamsCom() {
             throw new Error("wrong task ID")
         }
         setTeamTask({ ...obj })
-        const result = await axiosHelperFunction<TaskObj>({ "dataSource": "tasks", fetchType: "post", "payload": { tasks: teamTask, teamID: teamID } })
+        const result = await axiosHelperFunction<TaskObj, string>({ "dataSource": "tasks", fetchType: "post", "payload": { tasks: teamTask, teamID: teamID } })
         if (result.status == "success") {
             navigate(`/backlog/${teamID}`)
         }

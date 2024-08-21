@@ -1,10 +1,10 @@
-export type Result<T, Data> =
+export type Result<T> =
   | {
       status: "init";
     }
   | {
       status: "success";
-      data: T extends undefined ? Data : T | Data;
+      data: T;
     }
   | {
       status: "error";

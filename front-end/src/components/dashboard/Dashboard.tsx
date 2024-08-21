@@ -5,10 +5,10 @@ import { axiosHelperFunction } from "../../axiosCall/axiosHelper";
 type Team = { name: "", _id: "" }
 export default function Dashboard() {
     const navigate = useNavigate()
-    const [teams, setTeams] = useState<Result<Team[], string>>({ status: "init" })
+    const [teams, setTeams] = useState<Result<Team[]>>({ status: "init" })
     useEffect(() => {
         async function func() {
-            const response = await axiosHelperFunction<Team[], string>({ "dataSource": "teams", fetchType: "get", queryParam: "" })
+            const response = await axiosHelperFunction<string, Team[]>({ "dataSource": "teams", fetchType: "get", queryParam: "" })
             if (response.status == "success") {
                 if (typeof response.data !== "string") {
                     setTeams(response)

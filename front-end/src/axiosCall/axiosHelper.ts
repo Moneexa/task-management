@@ -20,11 +20,10 @@ type Helper<T> =
           payload: T;
         }
     );
-type OptionalGeneric<T = undefined> = T | T[] | undefined;
 
-export async function axiosHelperFunction<T = undefined, Data = undefined>(
-  fetchCall: Helper<OptionalGeneric<T>>
-): Promise<Result<T, Data>> {
+export async function axiosHelperFunction<T, D>(
+  fetchCall: Helper<T>
+): Promise<Result<D>> {
   const { dataSource, fetchType } = fetchCall;
   let response;
 
